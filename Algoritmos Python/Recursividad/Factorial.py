@@ -19,6 +19,6 @@ if __name__ == "__main__":
             print("El numero debe ser mayor o igual a 0")
         else:
             print("El factorial de ",num," de manera recursiva es",factorialRecursivo(num))
-            print("El factorial de ",num," de manera interativa es",factorialIterativo(num))
+            print("El factorial de ",num," de manera iterativa es",factorialIterativo(num))
     except:
         print("Se espera un numero")
