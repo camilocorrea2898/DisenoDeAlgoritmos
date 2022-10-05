@@ -9,40 +9,40 @@ namespace ApiRest.Controller
     {
         private readonly Model.Bender.BenderContext _context = new();
         private Dto.Response objReturn = new();
-        private List<Dto.Bender.User.GetData> objGetData = new();
-        private Dto.Bender.User.LoginResponse loginResponse = new();
+        private List<Dto.Users.GetData> objGetData = new();
+        private Dto.Users.LoginResponse loginResponse = new();
 
-        // GET  User/GetAll
+        //GET  User/GetAll
         [HttpGet("GetAll")]
-        public List<Dto.Bender.User.GetData> GetAll()
+        public List<Dto.Users.GetData> GetAll()
         {
             return objGetData;
         }
 
-        // POST  User/Insert
+        //POST  User/Insert
         [HttpPost("Insert")]
-        public Dto.Response Insert(Dto.Bender.User.Insert objInsert)
+        public Dto.Response Insert(Dto.Users.Insert objInsert)
         {
             return objReturn;
         }
 
-        // PUT  User/Edit/123456789
+        //PUT  User/Edit/123456789
         [HttpPut("Edit/{Identification}")]
-        public Dto.Response Edit(long Identification, Dto.Bender.User.Edit objEdit)
+        public Dto.Response Edit(long Identification, Dto.Users.Edit objEdit)
         {
             return objReturn;
         }
 
-        // DELETE  User/Delete/123456789
+        //DELETE  User/Delete/123456789
         [HttpDelete("Delete/{Identification}")]
         public Dto.Response Delete(long Identification)
         {
             return objReturn;
         }
 
-        // POST  User/Login
+        //POST  User/Login
         [HttpPost("Login")]
-        public Dto.Bender.User.LoginResponse Login(Dto.Bender.User.LoginRequest objInsert)
+        public Dto.Users.LoginResponse Login(Dto.Users.LoginRequest objInsert)
         {
             return loginResponse;
         }

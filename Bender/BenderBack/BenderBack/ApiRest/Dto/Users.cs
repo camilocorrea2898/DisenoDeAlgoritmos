@@ -1,4 +1,4 @@
-﻿namespace ApiRest.Dto.Bender.Users
+﻿namespace ApiRest.Dto.Users
 {
     public class LoginRequest
     {

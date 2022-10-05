@@ -8,11 +8,11 @@ namespace ApiRest.Controller
     public class RolesController : ControllerBase
     {
         private readonly Model.Bender.BenderContext _context = new();
-        private List<Dto.Bender.Roles.GetData> objGetData = new();
+        private List<Dto.Roles.GetData> objGetData = new();
 
-        // GET  User/GetAll
+        //GET  Roles/GetAll
         [HttpGet("GetAll")]
-        public List<Dto.Bender.Roles.GetData> GetAll()
+        public List<Dto.Roles.GetData> GetAll()
         {
             return objGetData;
         }

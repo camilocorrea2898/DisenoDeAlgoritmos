@@ -1,4 +1,4 @@
-﻿namespace ApiRest.Dto.Bender.Roles
+﻿namespace ApiRest.Dto.Roles
 {
     public class GetData
     {
