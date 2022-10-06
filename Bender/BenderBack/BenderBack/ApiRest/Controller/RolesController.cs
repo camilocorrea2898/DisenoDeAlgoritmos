@@ -7,7 +7,7 @@ namespace ApiRest.Controller
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly Model.Bender.BenderContext _context = new();
+        //private readonly Model.Bender.BenderContext _context = new();
         private List<Dto.Roles.GetData> objGetData = new();
 
         //GET  Roles/GetAll

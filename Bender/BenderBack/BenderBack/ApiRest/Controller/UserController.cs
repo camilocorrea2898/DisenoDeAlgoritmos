@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Xml;
 
 namespace ApiRest.Controller
 {
@@ -7,15 +10,29 @@ namespace ApiRest.Controller
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly Model.Bender.BenderContext _context = new();
+        private readonly Model.biblioteca.bibliotecaContext _context = new();
         private Dto.Response objReturn = new();
         private List<Dto.Users.GetData> objGetData = new();
-        private Dto.Users.LoginResponse loginResponse = new();
+        private Dto.Users.LoginResponse loginResponse = new(){Success = false};
 
         //GET  User/GetAll
         [HttpGet("GetAll")]
         public List<Dto.Users.GetData> GetAll()
         {
+            List<Model.biblioteca.Autore> ObjData = _context.Autores
+                //.Where(x => x.Id == 1)
+                .ToList();
+            foreach (var data in ObjData)
+            {
+                Dto.Users.GetData row = new()
+                {
+                    Identification = Convert.ToString(data.Id),
+                    Name = data.Nombre,
+                    Password="",
+                    RolId =1
+                };
+                objGetData.Add(row);
+            }
             return objGetData;
         }
 
@@ -23,6 +40,18 @@ namespace ApiRest.Controller
         [HttpPost("Insert")]
         public Dto.Response Insert(Dto.Users.Insert objInsert)
         {
+            Model.biblioteca.Autore objAutores = new()
+            {
+                Id = Convert.ToInt32(objInsert.Identification),
+                Nombre = objInsert.Name
+            };
+            _context.Autores.Add(objAutores);
+            _context.SaveChanges();
+            if (objAutores.Id > 0)
+            {
+                objReturn.Success = true;
+            }
+            //string Pass = BCrypt.Net.BCrypt.HashPassword(objInsert.Password);
             return objReturn;
         }
 
@@ -30,6 +59,13 @@ namespace ApiRest.Controller
         [HttpPut("Edit/{Identification}")]
         public Dto.Response Edit(long Identification, Dto.Users.Edit objEdit)
         {
+            var objAutores = _context.Autores.Find(Identification);
+            _context.Entry(objAutores).State = EntityState.Modified;
+            _context.SaveChanges();
+            if (objAutores.Id > 0)
+            {
+                objReturn.Success = true;
+            }
             return objReturn;
         }
 
@@ -37,6 +73,10 @@ namespace ApiRest.Controller
         [HttpDelete("Delete/{Identification}")]
         public Dto.Response Delete(long Identification)
         {
+            var objAutores = _context.Autores.Find(Identification);
+            _context.Remove(objAutores);
+            _context.SaveChanges();
+            objReturn.Success = true;
             return objReturn;
         }
 
@@ -44,6 +84,10 @@ namespace ApiRest.Controller
         [HttpPost("Login")]
         public Dto.Users.LoginResponse Login(Dto.Users.LoginRequest objInsert)
         {
+            if (BCrypt.Net.BCrypt.Verify(objInsert.Password,"Encyprt"))
+            {
+                loginResponse.Success = true;
+            }
             return loginResponse;
         }
     }
