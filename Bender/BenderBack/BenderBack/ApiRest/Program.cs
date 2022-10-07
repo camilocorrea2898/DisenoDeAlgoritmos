@@ -11,7 +11,6 @@ namespace ApiRest
             IServiceCollection services = builder.Services;
             IConfiguration configuration = builder.Configuration;
 
-
             //Cadena de conexión
             ConnectionDB.SetBenderConnectionString(configuration);
 
@@ -27,9 +26,9 @@ namespace ApiRest
 
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = $"BenderBack v1",
+                    Title = "BenderBack v1",
                     Version = "v1",
-                    Description = $"BenderBack API"
+                    Description = "BenderBack API"
                 });
             });
 
@@ -38,8 +37,8 @@ namespace ApiRest
             app.UseCors(x => x
              .AllowAnyMethod()
              .AllowAnyHeader()
-             .SetIsOriginAllowed(origin => true) // allow any origin
-             .AllowCredentials()); // allow credentials
+             .SetIsOriginAllowed(origin => true)
+             .AllowCredentials());
 
             if (app.Environment.IsDevelopment())
             {
@@ -48,7 +47,7 @@ namespace ApiRest
 
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", $"BenderBack v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BenderBack v1");
                 c.DefaultModelsExpandDepth(-1);
             });
 

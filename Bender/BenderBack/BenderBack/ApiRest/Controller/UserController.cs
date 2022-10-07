@@ -19,20 +19,24 @@ namespace ApiRest.Controller
         [HttpGet("GetAll")]
         public List<Dto.Users.GetData> GetAll()
         {
-            List<Model.biblioteca.Autore> ObjData = _context.Autores
+            try
+            {
+                List<Model.biblioteca.Autore> ObjData = _context.Autores
                 //.Where(x => x.Id == 1)
                 .ToList();
-            foreach (var data in ObjData)
-            {
-                Dto.Users.GetData row = new()
+                foreach (var data in ObjData)
                 {
-                    Identification = Convert.ToString(data.Id),
-                    Name = data.Nombre,
-                    Password="",
-                    RolId =1
-                };
-                objGetData.Add(row);
+                    Dto.Users.GetData row = new()
+                    {
+                        Identification = Convert.ToString(data.Id),
+                        Name = data.Nombre,
+                        Password = "",
+                        RolId = 1
+                    };
+                    objGetData.Add(row);
+                }
             }
+            catch(Exception ex){}
             return objGetData;
         }
 
@@ -40,18 +44,24 @@ namespace ApiRest.Controller
         [HttpPost("Insert")]
         public Dto.Response Insert(Dto.Users.Insert objInsert)
         {
-            Model.biblioteca.Autore objAutores = new()
+            try
             {
-                Id = Convert.ToInt32(objInsert.Identification),
-                Nombre = objInsert.Name
-            };
-            _context.Autores.Add(objAutores);
-            _context.SaveChanges();
-            if (objAutores.Id > 0)
-            {
-                objReturn.Success = true;
+                Model.biblioteca.Autore objAutores = new()
+                {
+                    Id = Convert.ToInt32(objInsert.Identification),
+                    Nombre = objInsert.Name
+                };
+                _context.Autores.Add(objAutores);
+                _context.SaveChanges();
+                if (objAutores.Id > 0)
+                {
+                    objReturn.SelectedResponse(true);
+                }
+                //string Pass = BCrypt.Net.BCrypt.HashPassword(objInsert.Password);
             }
-            //string Pass = BCrypt.Net.BCrypt.HashPassword(objInsert.Password);
+            catch (Exception ex) {
+                objReturn.SelectedResponse(false, ex.Message);
+            }
             return objReturn;
         }
 
@@ -59,12 +69,19 @@ namespace ApiRest.Controller
         [HttpPut("Edit/{Identification}")]
         public Dto.Response Edit(long Identification, Dto.Users.Edit objEdit)
         {
-            var objAutores = _context.Autores.Find(Identification);
-            _context.Entry(objAutores).State = EntityState.Modified;
-            _context.SaveChanges();
-            if (objAutores.Id > 0)
+            try
             {
-                objReturn.Success = true;
+                var objAutores = _context.Autores.Find(Identification);
+                _context.Entry(objAutores).State = EntityState.Modified;
+                _context.SaveChanges();
+                if (objAutores.Id > 0)
+                {
+                    objReturn.SelectedResponse(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                objReturn.SelectedResponse(false, ex.Message);
             }
             return objReturn;
         }
@@ -73,10 +90,17 @@ namespace ApiRest.Controller
         [HttpDelete("Delete/{Identification}")]
         public Dto.Response Delete(long Identification)
         {
-            var objAutores = _context.Autores.Find(Identification);
-            _context.Remove(objAutores);
-            _context.SaveChanges();
-            objReturn.Success = true;
+            try
+            {
+                var objAutores = _context.Autores.Find(Identification);
+                _context.Remove(objAutores);
+                _context.SaveChanges();
+                objReturn.SelectedResponse(true);
+            }
+            catch (Exception ex)
+            {
+                objReturn.SelectedResponse(false, ex.Message);
+            }
             return objReturn;
         }
 
@@ -84,10 +108,14 @@ namespace ApiRest.Controller
         [HttpPost("Login")]
         public Dto.Users.LoginResponse Login(Dto.Users.LoginRequest objInsert)
         {
-            if (BCrypt.Net.BCrypt.Verify(objInsert.Password,"Encyprt"))
+            try
             {
-                loginResponse.Success = true;
+                if (BCrypt.Net.BCrypt.Verify(objInsert.Password, "Encyprt"))
+                {
+                    loginResponse.Success = true;
+                }
             }
+            catch (Exception ex){}
             return loginResponse;
         }
     }

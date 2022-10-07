@@ -11,11 +11,12 @@ namespace ApiRest.Dto
         public bool Success { get; set; }
         public string Message { get; set; }
 
-        public Response SelectedResponse(bool Success, string Message)
+        public Response SelectedResponse(bool Success, string Message="")
         {
             Response objReturn = new();
+
             objReturn.Success = Success;
-            objReturn.Message = Message;
+            objReturn.Message = Success == true ? "Exitoso" : Message == "" ? "" : Message;
             return objReturn;
         }
     }
