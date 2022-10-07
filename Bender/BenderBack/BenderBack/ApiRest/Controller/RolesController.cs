@@ -8,7 +8,7 @@ namespace ApiRest.Controller
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly Model.biblioteca.bibliotecaContext _context = new();
+        private readonly Model.Bender.BenderContext _context = new();
         private List<Dto.Roles.GetData> objGetData = new();
 
         //GET  Roles/GetAll
@@ -17,15 +17,15 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.biblioteca.Autore> ObjData = _context.Autores
+                List<Model.Bender.Rol> ObjData = _context.Rols
                 //.Where(x => x.Id == 1)
                 .ToList();
                 foreach (var data in ObjData)
                 {
                     Dto.Roles.GetData row = new()
                     {
-                        RolId = Convert.ToInt64(data.Id),
-                        RolName = data.Nombre
+                        RolId = Convert.ToInt64(data.Idrol),
+                        RolName = data.Rolname
                     };
                     objGetData.Add(row);
                 }

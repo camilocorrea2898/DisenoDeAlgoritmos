@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApiRest.Dto.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -10,8 +11,7 @@ namespace ApiRest.Controller
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly Model.biblioteca.bibliotecaContext _context = new();
-        private Dto.Response objReturn = new();
+        private readonly Model.Bender.BenderContext _context = new();
         private List<Dto.Users.GetData> objGetData = new();
         private Dto.Users.LoginResponse loginResponse = new(){Success = false};
 
@@ -21,17 +21,15 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.biblioteca.Autore> ObjData = _context.Autores
-                //.Where(x => x.Id == 1)
-                .ToList();
+                List<Model.Bender.User> ObjData = _context.Users.ToList();
                 foreach (var data in ObjData)
                 {
                     Dto.Users.GetData row = new()
                     {
-                        Identification = Convert.ToString(data.Id),
-                        Name = data.Nombre,
-                        Password = "",
-                        RolId = 1
+                        Identification = Convert.ToString(data.Iduser),
+                        Name = data.Names,
+                        Password = data.Password,
+                        RolId = data.RolIdrol
                     };
                     objGetData.Add(row);
                 }
@@ -44,23 +42,26 @@ namespace ApiRest.Controller
         [HttpPost("Insert")]
         public Dto.Response Insert(Dto.Users.Insert objInsert)
         {
+            var objReturn = new Dto.Response();
             try
             {
-                Model.biblioteca.Autore objAutores = new()
+                Model.Bender.User objUsers = new()
                 {
-                    Id = Convert.ToInt32(objInsert.Identification),
-                    Nombre = objInsert.Name
+                    Iduser = Convert.ToInt32(objInsert.Identification),
+                    Names = objInsert.Name,
+                    RolIdrol=objInsert.RolId,
+                    Password = BCrypt.Net.BCrypt.HashPassword(objInsert.Password),
+                    BranchIdbranch= objInsert.Idbranch
                 };
-                _context.Autores.Add(objAutores);
+                _context.Users.Add(objUsers);
                 _context.SaveChanges();
-                if (objAutores.Id > 0)
+                if (objUsers.Iduser > 0)
                 {
-                    objReturn.SelectedResponse(true);
+                    objReturn=objReturn.SelectedResponse(true);
                 }
-                //string Pass = BCrypt.Net.BCrypt.HashPassword(objInsert.Password);
             }
             catch (Exception ex) {
-                objReturn.SelectedResponse(false, ex.Message);
+                objReturn=objReturn.SelectedResponse(false, ex.Message);
             }
             return objReturn;
         }
@@ -69,19 +70,21 @@ namespace ApiRest.Controller
         [HttpPut("Edit/{Identification}")]
         public Dto.Response Edit(long Identification, Dto.Users.Edit objEdit)
         {
+            var objReturn = new Dto.Response();
             try
             {
-                var objAutores = _context.Autores.Find(Identification);
-                _context.Entry(objAutores).State = EntityState.Modified;
+                var objUsers = _context.Users.Where(x=> x.Iduser==Identification).FirstOrDefault();
+                objUsers.Password = String.IsNullOrEmpty(objEdit.Password) ? objUsers.Password : BCrypt.Net.BCrypt.HashPassword(objEdit.Password);
+                _context.Entry(objUsers).State = EntityState.Modified;
                 _context.SaveChanges();
-                if (objAutores.Id > 0)
+                if (objUsers.Iduser > 0)
                 {
-                    objReturn.SelectedResponse(true);
+                    objReturn=objReturn.SelectedResponse(true);
                 }
             }
             catch (Exception ex)
             {
-                objReturn.SelectedResponse(false, ex.Message);
+                objReturn=objReturn.SelectedResponse(false, ex.Message);
             }
             return objReturn;
         }
@@ -90,16 +93,17 @@ namespace ApiRest.Controller
         [HttpDelete("Delete/{Identification}")]
         public Dto.Response Delete(long Identification)
         {
+            var objReturn = new Dto.Response();
             try
             {
-                var objAutores = _context.Autores.Find(Identification);
-                _context.Remove(objAutores);
+                var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
+                _context.Remove(objUsers);
                 _context.SaveChanges();
-                objReturn.SelectedResponse(true);
+                objReturn=objReturn.SelectedResponse(true);
             }
             catch (Exception ex)
             {
-                objReturn.SelectedResponse(false, ex.Message);
+                objReturn=objReturn.SelectedResponse(false, ex.Message);
             }
             return objReturn;
         }
@@ -110,8 +114,11 @@ namespace ApiRest.Controller
         {
             try
             {
-                if (BCrypt.Net.BCrypt.Verify(objInsert.Password, "Encyprt"))
+                var objUsers = _context.Users.Where(x => x.Iduser == Convert.ToInt32(objInsert.User)).FirstOrDefault();
+                if (BCrypt.Net.BCrypt.Verify(objInsert.Password, objUsers.Password))
                 {
+                    loginResponse.Name = objUsers.Names;
+                    loginResponse.RolId = objUsers.RolIdrol;
                     loginResponse.Success = true;
                 }
             }
