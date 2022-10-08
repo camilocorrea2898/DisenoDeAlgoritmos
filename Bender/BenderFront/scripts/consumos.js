@@ -19,7 +19,7 @@ function ajaxlogin(userName, password) {
         "user": userName,
         "password": password
     }
-    return consumoAjax("POST", url, JSON.stringify(body), "aplication/json");
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
 }
 //---------------------------------------------------------------------------------------
 function deleteUser(userId) {
@@ -27,13 +27,13 @@ function deleteUser(userId) {
 }
 //---------------------------------------------------------------------------------------
 function rolsGetAll() {
-    //return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
-    return consumoAjax("GET", "consumos/listroles.json", "", "");
+    return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
+    //return consumoAjax("GET", "consumos/listroles.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function userGetAll() {
-    //return consumoAjax("GET", urlBase + "User/GetAll", "", "");
-    return consumoAjax("GET", "consumos/listuser.json", "", "");
+    return consumoAjax("GET", urlBase + "User/GetAll", "", "");
+    //return consumoAjax("GET", "consumos/listuser.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function consumoAjax(method, url, body, contentType) {
