@@ -12,19 +12,20 @@ namespace ApiRest.Controller
     public class UserController : ControllerBase
     {
         private readonly Model.Bender.BenderContext _context = new();
-        private List<Dto.Users.GetData> objGetData = new();
-        private Dto.Users.LoginResponse loginResponse = new(){Success = false};
+        private List<GetData> objGetData = new();
+        private GetData objGetDataObject = new();
+        private LoginResponse loginResponse = new(){Success = false};
 
         //GET  User/GetAll
         [HttpGet("GetAll")]
-        public List<Dto.Users.GetData> GetAll()
+        public List<GetData> GetAll()
         {
             try
             {
                 List<Model.Bender.User> ObjData = _context.Users.ToList();
                 foreach (var data in ObjData)
                 {
-                    Dto.Users.GetData row = new()
+                    GetData row = new()
                     {
                         Identification = Convert.ToString(data.Iduser),
                         Name = data.Names,
@@ -38,26 +39,54 @@ namespace ApiRest.Controller
             return objGetData;
         }
 
+        //GET  User/GetById/132456
+        [HttpGet("GetById/{Identification}")]
+        public GetData GetById(int Identification)
+        {
+            try
+            {
+                Model.Bender.User ObjData = _context.Users.Where(x=>x.Iduser== Identification).FirstOrDefault();
+                objGetDataObject = new()
+                {
+                    Identification = Convert.ToString(ObjData.Iduser),
+                    Name = ObjData.Names,
+                    Password = ObjData.Password,
+                    RolId = ObjData.RolIdrol
+                };
+            }
+            catch (Exception ex) { }
+            return objGetDataObject;
+        }
+
         //POST  User/Insert
         [HttpPost("Insert")]
-        public Dto.Response Insert(Dto.Users.Insert objInsert)
+        public Dto.Response Insert(Insert objInsert)
         {
             var objReturn = new Dto.Response();
             try
             {
-                Model.Bender.User objUsers = new()
+                int RolIdAdmin = 1001;
+                List<Model.Bender.User> ObjDataAdmin = _context.Users.Where(x => x.RolIdrol == RolIdAdmin).ToList();
+                if (objInsert.RolId== RolIdAdmin && ObjDataAdmin.Count >= 1)
                 {
-                    Iduser = Convert.ToInt32(objInsert.Identification),
-                    Names = objInsert.Name,
-                    RolIdrol=objInsert.RolId,
-                    Password = BCrypt.Net.BCrypt.HashPassword(objInsert.Password),
-                    BranchIdbranch= objInsert.Idbranch
-                };
-                _context.Users.Add(objUsers);
-                _context.SaveChanges();
-                if (objUsers.Iduser > 0)
+                    objReturn = objReturn.SelectedResponse(false, "Ya existe un usuario administrador");
+                }
+                else
                 {
-                    objReturn=objReturn.SelectedResponse(true);
+                    Model.Bender.User objUsers = new()
+                    {
+                        Iduser = Convert.ToInt32(objInsert.Identification),
+                        Names = objInsert.Name,
+                        RolIdrol = objInsert.RolId,
+                        Password = BCrypt.Net.BCrypt.HashPassword(objInsert.Password),
+                        BranchIdbranch = objInsert.Idbranch
+                    };
+                    _context.Users.Add(objUsers);
+                    _context.SaveChanges();
+                    if (objUsers.Iduser > 0)
+                    {
+                        objReturn = objReturn.SelectedResponse(true);
+                    }
                 }
             }
             catch (Exception ex) {
@@ -68,18 +97,37 @@ namespace ApiRest.Controller
 
         //PUT  User/Edit/123456789
         [HttpPut("Edit/{Identification}")]
-        public Dto.Response Edit(long Identification, Dto.Users.Edit objEdit)
+        public Dto.Response Edit(long Identification, Edit objEdit)
         {
             var objReturn = new Dto.Response();
             try
             {
-                var objUsers = _context.Users.Where(x=> x.Iduser==Identification).FirstOrDefault();
-                objUsers.Password = String.IsNullOrEmpty(objEdit.Password) ? objUsers.Password : BCrypt.Net.BCrypt.HashPassword(objEdit.Password);
-                _context.Entry(objUsers).State = EntityState.Modified;
-                _context.SaveChanges();
-                if (objUsers.Iduser > 0)
+                int RolIdAdmin = 1001;
+                List<Model.Bender.User> ObjDataAdmin = _context.Users.Where(x => x.RolIdrol == RolIdAdmin).ToList();
+                if (objEdit.RolId != 0 &&
+                    objEdit.RolId == RolIdAdmin && 
+                    ObjDataAdmin.Count >= 1)
                 {
-                    objReturn=objReturn.SelectedResponse(true);
+                    objReturn = objReturn.SelectedResponse(false, "Ya existe un usuario administrador");
+                }
+                else
+                {
+                    var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
+                    if(objUsers.RolIdrol == RolIdAdmin && objUsers.RolIdrol != objEdit.RolId)
+                    {
+                        objReturn = objReturn.SelectedResponse(false, "El usuario administrador no puede cambiar su rol");
+
+                    }
+                    objUsers.Names = String.IsNullOrEmpty(objEdit.Name) ? objUsers.Names : objEdit.Name;
+                    objUsers.RolIdrol = objEdit.RolId == 0 ? objUsers.RolIdrol : objEdit.RolId;
+                    objUsers.BranchIdbranch = objUsers.BranchIdbranch;
+                    objUsers.Password = String.IsNullOrEmpty(objEdit.Password) ? objUsers.Password : BCrypt.Net.BCrypt.HashPassword(objEdit.Password);
+                    _context.Entry(objUsers).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    if (objUsers.Iduser > 0)
+                    {
+                        objReturn = objReturn.SelectedResponse(true);
+                    }
                 }
             }
             catch (Exception ex)
@@ -110,16 +158,19 @@ namespace ApiRest.Controller
 
         //POST  User/Login
         [HttpPost("Login")]
-        public Dto.Users.LoginResponse Login(Dto.Users.LoginRequest objInsert)
+        public LoginResponse Login(LoginRequest objInsert)
         {
             try
             {
-                var objUsers = _context.Users.Where(x => x.Iduser == Convert.ToInt32(objInsert.User)).FirstOrDefault();
-                if (BCrypt.Net.BCrypt.Verify(objInsert.Password, objUsers.Password))
+                Model.Bender.User objUsers = _context.Users.Where(x => x.Iduser == Convert.ToInt32(objInsert.User)).FirstOrDefault();
+                if(objUsers != null)
                 {
-                    loginResponse.Name = objUsers.Names;
-                    loginResponse.RolId = objUsers.RolIdrol;
-                    loginResponse.Success = true;
+                    if (BCrypt.Net.BCrypt.Verify(objInsert.Password, objUsers.Password))
+                    {
+                        loginResponse.Name = objUsers.Names;
+                        loginResponse.RolId = objUsers.RolIdrol;
+                        loginResponse.Success = true;
+                    }
                 }
             }
             catch (Exception ex){}
