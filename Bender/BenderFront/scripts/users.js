@@ -176,7 +176,7 @@ async function agregarUsuario(identification,nombre,password,rol){
         $("#spinnerAgregar").hide();
         $("#cancelarAgregar").click();
         swalResponse.fire({
-            text: "Error al eliminar al usuario, por favor reintenta más tarde",
+            text: "Error al agregar el usuario, por favor reintenta más tarde",
             icon: "error",
         });
     }
