@@ -395,13 +395,10 @@ namespace ApiRest.Model.Bender
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => new { e.Iduser, e.RolIdrol })
-                    .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                entity.HasKey(e => new { e.Iduser })
+                    .HasName("PRIMARY");
 
                 entity.ToTable("user");
-
-                entity.HasIndex(e => e.RolIdrol, "fk_usuario_rol1_idx");
 
                 entity.HasIndex(e => e.BranchIdbranch, "fk_usuario_sucursal1_idx");
 
@@ -424,12 +421,6 @@ namespace ApiRest.Model.Bender
                     .HasForeignKey(d => d.BranchIdbranch)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_usuario_sucursal1");
-
-                entity.HasOne(d => d.RolIdrolNavigation)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.RolIdrol)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_usuario_rol1");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -102,32 +102,16 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                int RolIdAdmin = 1001;
-                List<Model.Bender.User> ObjDataAdmin = _context.Users.Where(x => x.RolIdrol == RolIdAdmin).ToList();
-                if (objEdit.RolId != 0 &&
-                    objEdit.RolId == RolIdAdmin && 
-                    ObjDataAdmin.Count >= 1)
+                var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
+                objUsers.Names = String.IsNullOrEmpty(objEdit.Name) ? objUsers.Names : objEdit.Name;
+                objUsers.RolIdrol = objEdit.RolId == 0 ? objUsers.RolIdrol : objEdit.RolId;
+                objUsers.BranchIdbranch = objUsers.BranchIdbranch;
+                objUsers.Password = String.IsNullOrEmpty(objEdit.Password) ? objUsers.Password : BCrypt.Net.BCrypt.HashPassword(objEdit.Password);
+                _context.Entry(objUsers).State = EntityState.Modified;
+                _context.SaveChanges();
+                if (objUsers.Iduser > 0)
                 {
-                    objReturn = objReturn.SelectedResponse(false, "Ya existe un usuario administrador");
-                }
-                else
-                {
-                    var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
-                    if(objUsers.RolIdrol == RolIdAdmin && objUsers.RolIdrol != objEdit.RolId)
-                    {
-                        objReturn = objReturn.SelectedResponse(false, "El usuario administrador no puede cambiar su rol");
-
-                    }
-                    objUsers.Names = String.IsNullOrEmpty(objEdit.Name) ? objUsers.Names : objEdit.Name;
-                    objUsers.RolIdrol = objEdit.RolId == 0 ? objUsers.RolIdrol : objEdit.RolId;
-                    objUsers.BranchIdbranch = objUsers.BranchIdbranch;
-                    objUsers.Password = String.IsNullOrEmpty(objEdit.Password) ? objUsers.Password : BCrypt.Net.BCrypt.HashPassword(objEdit.Password);
-                    _context.Entry(objUsers).State = EntityState.Modified;
-                    _context.SaveChanges();
-                    if (objUsers.Iduser > 0)
-                    {
-                        objReturn = objReturn.SelectedResponse(true);
-                    }
+                    objReturn = objReturn.SelectedResponse(true);
                 }
             }
             catch (Exception ex)

@@ -12,6 +12,5 @@ namespace ApiRest.Model.Bender
         public int RolIdrol { get; set; }
 
         public virtual Branch BranchIdbranchNavigation { get; set; } = null!;
-        public virtual Rol RolIdrolNavigation { get; set; } = null!;
     }
 }
