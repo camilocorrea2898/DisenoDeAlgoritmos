@@ -79,17 +79,19 @@ async function eliminarUser(userId){
         });
         return;
     }
-    if (response.success) {
-        swalResponse.fire({
-            text: "Eliminado!",
-            icon: "success",
-        });
-    } else {
-        swalResponse.fire({
-            text: "Error al eliminar el usuario, por favor reintenta más tarde",
-            icon: "error",
-        });
-    }
+	if (response.success) {
+		swalResponse.fire({
+			text: "Eliminado!",
+			icon: "success",
+		});
+		$("#userTableBody tr").remove();
+		listaUsuarios();
+	} else {
+		swalResponse.fire({
+			text: "Error al eliminar el usuario, por favor reintenta más tarde",
+			icon: "error",
+		});
+	}
 }
 
 async function agregarUsuario(identification,nombre,password,rol){
