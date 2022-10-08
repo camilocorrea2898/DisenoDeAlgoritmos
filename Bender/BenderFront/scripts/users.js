@@ -1,5 +1,16 @@
+const swal = Swal.mixin({
+    width: 400,
+});
+
+const swalResponse = Swal.mixin({
+    width: 400,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+});
+
 async function getRol(rolId) {
-    roles = await rolsGetAll();
+    var roles = await rolsGetAll();
     for (const key in roles) {
         if (rolId === roles[key].rolId) {
             //console.log(roles[key].rolName)
@@ -9,8 +20,9 @@ async function getRol(rolId) {
 }
 
 async function listaUsuarios() {
-    response = await userGetAll();
+    var response = await userGetAll();
     for (const key in response) {
+        console.log(response[key]);
         var newRowContent =
             '<tr><td scope="row">' +
             response[key].identification +
@@ -18,15 +30,14 @@ async function listaUsuarios() {
             response[key].name +
             "</td><td>" +
             (await getRol(response[key].rolId)) +
-            '</td><td class="text-center"><a class="text-warning" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-regular fa-pen-to-square"></i></a></td><td class="text-center"><a class="text-danger" onclick="eliminarUsuario(' +
-            response[key].name+ ',' +response[key].identification +
+            '</td><td class="text-center"><a class="text-warning" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="fa-regular fa-pen-to-square"></i></a></td><td class="text-center"><a class="text-danger" onclick="eliminarUsuario('+response[key].identification +
             ')"><i class="fa-regular fa-trash"></i></a></td></tr>';
         $("#userTableBody").append(newRowContent);
     }
 }
 
 async function listaRoles() {
-    response = await rolsGetAll();
+    var response = await rolsGetAll();
     for (const key in response) {
         var newOptionRol =
             '<option value="' +
@@ -35,26 +46,81 @@ async function listaRoles() {
             response[key].rolName +
             "</option>";
         $("#rol").append(newOptionRol);
+        $("#rolEdit").append(newOptionRol);
     }
 }
 
-function eliminarUsuario(name, userId) {
-    Swal.fire({
-        title: "¿Estas seguro de eliminar a " + name + "?",
+function eliminarUsuario(userId) {
+    swal.fire({
+        text: "¿Estas seguro de eliminar al usuario " + userId + "?",
+        icon: 'warning',
         showDenyButton: true,
         confirmButtonText: "Confirmar",
         denyButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire("Eliminado!", "", "success");
+            eliminarUser(userId)
         } else if (result.isDenied) {
-            Swal.fire({
-                title: "Cancelado",
+            swalResponse.fire({
+                text: "Cancelado",
                 icon: "error",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
             });
         }
     });
+}
+
+async function eliminarUser(userId){
+    try {
+        var response = await deleteUser(userId);
+    } catch (e) {
+        swalResponse.fire({
+            text: "Error al eliminar el usuario, por favor reintenta más tarde",
+            icon: "error",
+        });
+        return;
+    }
+    if (response.success) {
+        swalResponse.fire({
+            text: "Eliminado!",
+            icon: "success",
+        });
+    } else {
+        swalResponse.fire({
+            text: "Error al eliminar el usuario, por favor reintenta más tarde",
+            icon: "error",
+        });
+    }
+}
+
+async function agregarUsuario(identification,nombre,password,rol){
+    idbranch = 1101;
+    try {
+        var response = await insertUser(identification, nombre, password, rol, idbranch);
+    } catch (e) {
+        $("#spinnerAgregar").hide();
+        $("#cancelarAgregar").click();
+        swalResponse.fire({
+            text: "Error al agregar el usuario, por favor reintenta más tarde",
+            icon: "error",
+        });
+        return;
+    }
+    if (response.success) {
+        $("#spinnerAgregar").hide();
+        $("#cancelarAgregar").click();
+        swalResponse.fire({
+            text: "Agregado!",
+            icon: "success",
+        });
+        $("#userTableBody tr").remove();
+        listaUsuarios();
+        
+    } else {
+        $("#spinnerAgregar").hide();
+        $("#cancelarAgregar").click();
+        swalResponse.fire({
+            text: "Error al eliminar al usuario, por favor reintenta más tarde",
+            icon: "error",
+        });
+    }
 }

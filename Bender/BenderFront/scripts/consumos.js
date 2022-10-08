@@ -19,7 +19,19 @@ function ajaxlogin(userName, password) {
         "user": userName,
         "password": password
     }
-    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
+    return consumoAjax("POST", url, JSON.stringify(body), "aplication/json");
+}
+//---------------------------------------------------------------------------------------
+function insertUser(identification, name, password, rolId, idbranch) {
+    url = urlBase + "User/Insert";
+    body = {
+        "identification": identification,
+        "name": name,
+        "password": password,
+        "rolId": rolId,
+        "idbranch": idbranch
+    }
+    return consumoAjax("POST", url, JSON.stringify(body), "aplication/json");
 }
 //---------------------------------------------------------------------------------------
 function deleteUser(userId) {
@@ -37,13 +49,13 @@ function editUser(identification) {
 }
 //---------------------------------------------------------------------------------------
 function rolsGetAll() {
-    return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
-    //return consumoAjax("GET", "consumos/listroles.json", "", "");
+    //return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listroles.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function userGetAll() {
-    return consumoAjax("GET", urlBase + "User/GetAll", "", "");
-    //return consumoAjax("GET", "consumos/listuser.json", "", "");
+    //return consumoAjax("GET", urlBase + "User/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listuser.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function consumoAjax(method, url, body, contentType) {
