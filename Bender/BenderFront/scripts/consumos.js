@@ -49,13 +49,13 @@ function editUser(identification, userName, password, rolId) {
 }
 //---------------------------------------------------------------------------------------
 function rolsGetAll() {
-    //return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
-    return consumoAjax("GET", "consumos/listroles.json", "", "");
+    return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
+    //return consumoAjax("GET", "consumos/listroles.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function userGetAll() {
-    //return consumoAjax("GET", urlBase + "User/GetAll", "", "");
-    return consumoAjax("GET", "consumos/listuser.json", "", "");
+    return consumoAjax("GET", urlBase + "User/GetAll", "", "");
+    //return consumoAjax("GET", "consumos/listuser.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function consumoAjax(method, url, body, contentType) {
