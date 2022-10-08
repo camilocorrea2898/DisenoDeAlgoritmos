@@ -19,7 +19,7 @@ function ajaxlogin(userName, password) {
         "user": userName,
         "password": password
     }
-    return consumoAjax("POST", url, JSON.stringify(body), "aplication/json");
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
 }
 //---------------------------------------------------------------------------------------
 function insertUser(identification, name, password, rolId, idbranch) {
@@ -31,7 +31,7 @@ function insertUser(identification, name, password, rolId, idbranch) {
         "rolId": rolId,
         "idbranch": idbranch
     }
-    return consumoAjax("POST", url, JSON.stringify(body), "aplication/json");
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
 }
 //---------------------------------------------------------------------------------------
 function deleteUser(userId) {
