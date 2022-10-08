@@ -26,6 +26,16 @@ function deleteUser(userId) {
     return consumoAjax("DELETE", urlBase + "User/Delete/" + userId, "", "");
 }
 //---------------------------------------------------------------------------------------
+function editUser(identification) {
+    url = urlBase + "User/Edit/" + identification;
+    body = {
+        "name": userName,
+        "password": password,
+        "rolId": rolId
+    }
+    return consumoAjax("PUT", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
 function rolsGetAll() {
     return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
     //return consumoAjax("GET", "consumos/listroles.json", "", "");
