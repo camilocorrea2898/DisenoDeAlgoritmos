@@ -7,6 +7,7 @@ async function login(userName, password) {
         return;
     }
     if (response.success) {
+        sessionStorage.setItem("rol", response.rolId);
         location.href = "main.html";
     } else {
         LoginFail();
