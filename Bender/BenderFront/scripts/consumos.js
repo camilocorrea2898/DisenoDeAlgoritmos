@@ -59,7 +59,7 @@ function userGetAll() {
 }
 //---------------------------------------------------------------------------------------
 function supplierGetAll() {
-    return consumoAjax("GET", urlBase + "Supplier/GetAll", "", "");
+    return consumoAjax("GET", urlBase + "Purchases/GetAll", "", "");
     //return consumoAjax("GET", "consumos/listproveedores.json", "", "");
 }
 //---------------------------------------------------------------------------------------
