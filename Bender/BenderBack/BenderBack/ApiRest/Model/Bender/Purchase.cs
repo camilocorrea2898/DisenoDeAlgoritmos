@@ -10,8 +10,6 @@ namespace ApiRest.Model.Bender
         public string? Supplier { get; set; }
         public string? Nitsupplier { get; set; }
         public string? Quantity { get; set; }
-        public int ProductIdproduct { get; set; }
-
-        public virtual Product ProductIdproductNavigation { get; set; } = null!;
+        public int? ProductIdproduct { get; set; }
     }
 }

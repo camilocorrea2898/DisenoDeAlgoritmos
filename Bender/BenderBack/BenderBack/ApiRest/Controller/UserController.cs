@@ -65,7 +65,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                int RolIdAdmin = 1001;
+                int RolIdAdmin = 1;
                 List<Model.Bender.User> ObjDataAdmin = _context.Users.Where(x => x.RolIdrol == RolIdAdmin).ToList();
                 if (objInsert.RolId== RolIdAdmin && ObjDataAdmin.Count >= 1)
                 {

@@ -8,8 +8,6 @@ namespace ApiRest.Model.Bender
         public int Idstock { get; set; }
         public int? Stock1 { get; set; }
         public DateOnly? Date { get; set; }
-        public int ProductIdproduct { get; set; }
-
-        public virtual Product ProductIdproductNavigation { get; set; } = null!;
+        public int? ProductIdproduct { get; set; }
     }
 }

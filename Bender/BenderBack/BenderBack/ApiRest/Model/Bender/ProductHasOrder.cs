@@ -5,9 +5,8 @@ namespace ApiRest.Model.Bender
 {
     public partial class ProductHasOrder
     {
-        public int ProductIdproduct { get; set; }
-        public int OrderIdorder { get; set; }
-
-        public virtual Product ProductIdproductNavigation { get; set; } = null!;
+        public int ProductHasOrderIdproductorder { get; set; }
+        public int? ProductIdproduct { get; set; }
+        public int? OrderIdorder { get; set; }
     }
 }
