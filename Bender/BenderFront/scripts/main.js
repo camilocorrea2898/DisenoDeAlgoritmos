@@ -20,6 +20,7 @@ async function load(url) {
   let products = loadJs(url + "/products.js");
   let combos = loadJs(url + "/combos.js");
   let proveedores = loadJs(url + "/supplier.js");
+  let rols = loadJs(url + "/rols.js");
 
   await consumos;
   await users;
@@ -27,6 +28,7 @@ async function load(url) {
   await products;
   await combos;
   await proveedores;
+  await rols;
 }
 
 function loadJs(url) {
