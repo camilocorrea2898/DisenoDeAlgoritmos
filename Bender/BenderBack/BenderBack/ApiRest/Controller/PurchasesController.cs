@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiRest.Controller
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PurchasesController : ControllerBase
     {
@@ -26,12 +26,9 @@ namespace ApiRest.Controller
 
                     GetData row = new()
                     {
-                        IdPurchase = data.IdPurchase,
-                        Date = data.Date.ToString(),
-                        Nitsupplier = data.Nitsupplier,
-                        ProductIdproduct = data.ProductIdproduct,
-                        Quantity = data.Quantity,
-                        Supplier = data.Supplier 
+                        Id = data.IdPurchase,
+                        Identfication = data.Nitsupplier,
+                        Name = data.Supplier 
                     };
                     objGetData.Add(row);
                 }
@@ -50,12 +47,9 @@ namespace ApiRest.Controller
 
                 objGetDataObject = new()
                 {
-                    IdPurchase = ObjData.IdPurchase,
-                    Date = ObjData.Date.ToString(),
-                    Nitsupplier = ObjData.Nitsupplier,
-                    ProductIdproduct = ObjData.ProductIdproduct,
-                    Quantity = ObjData.Quantity,
-                    Supplier = ObjData.Supplier
+                    Id = ObjData.IdPurchase,
+                    Identfication = ObjData.Nitsupplier,
+                    Name = ObjData.Supplier
                 };
             }
             catch (Exception ex) { }
@@ -71,11 +65,11 @@ namespace ApiRest.Controller
             {
                 Purchase objPurchase = new()
                 {
-                    Date = DateOnly.Parse(objInsert.Date),
-                    Nitsupplier = objInsert.Nitsupplier,
-                    ProductIdproduct = objInsert.ProductIdproduct,
-                    Quantity = objInsert.Quantity,
-                    Supplier = objInsert.Supplier
+                    //Date = DateOnly.Parse(objInsert.Date),
+                    Nitsupplier = objInsert.Identfication,
+                    ProductIdproduct = 0,
+                    Quantity = "",
+                    Supplier = objInsert.Name
                 };
                 _context.Purchases.Add(objPurchase);
                 _context.SaveChanges();
@@ -99,11 +93,11 @@ namespace ApiRest.Controller
             try
             {
                 var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).FirstOrDefault();
-                objPurchase.Date = objEdit.Date == null ? objPurchase.Date : DateOnly.Parse(objEdit.Date);
-                objPurchase.Supplier = String.IsNullOrEmpty(objEdit.Supplier) ? objPurchase.Supplier : objEdit.Supplier;
-                objPurchase.Nitsupplier = String.IsNullOrEmpty(objEdit.Nitsupplier) ? objPurchase.Nitsupplier : objEdit.Nitsupplier;
-                objPurchase.Quantity = String.IsNullOrEmpty(objEdit.Quantity) ? objPurchase.Quantity : objEdit.Quantity;
-                objPurchase.ProductIdproduct = objEdit.ProductIdproduct == 0 ? objPurchase.ProductIdproduct : objEdit.ProductIdproduct;
+                //objPurchase.Date = objEdit.Date == null ? objPurchase.Date : DateOnly.Parse(objEdit.Date);
+                objPurchase.Supplier = String.IsNullOrEmpty(objEdit.Name) ? objPurchase.Supplier : objEdit.Name;
+                objPurchase.Nitsupplier = String.IsNullOrEmpty(objEdit.Identfication) ? objPurchase.Nitsupplier : objEdit.Identfication;
+                //objPurchase.Quantity = String.IsNullOrEmpty(objEdit.Quantity) ? objPurchase.Quantity : objEdit.Quantity;
+                //objPurchase.ProductIdproduct = objEdit.ProductIdproduct == 0 ? objPurchase.ProductIdproduct : objEdit.ProductIdproduct;
                 _context.Entry(objPurchase).State = EntityState.Modified;
                 _context.SaveChanges();
                 if (objPurchase.IdPurchase > 0)
