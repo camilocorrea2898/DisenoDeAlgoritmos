@@ -107,6 +107,19 @@ function insertCombos(name, products) {
     return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
 }
 //---------------------------------------------------------------------------------------
+function deleteCombos(comboId) {
+    return consumoAjax("DELETE", urlBase + "Combos/Delete/" + comboId, "", "");
+}
+//---------------------------------------------------------------------------------------
+function editCombos(comboId, nombre, bodyProductos) {
+    url = urlBase + "Combos/Edit/" + comboId;
+    body = {
+        "nameCombo": nombre,
+        "products": bodyProductos
+    }
+    return consumoAjax("PUT", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
 function consumoAjax(method, url, body, contentType) {
     let promise = new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();

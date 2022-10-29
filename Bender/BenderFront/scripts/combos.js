@@ -3,6 +3,11 @@ function limpiarModalAgregar(){
     $("#productos").val("");
 }
 
+function limpiarModalEditar(){
+    $("#nombreEdit").val("");
+    $("#productosEdit").val("");
+}
+
 async function getProducto(productId) {
     var productos = await productGetAll();
     for (const key in productos){
@@ -48,7 +53,7 @@ async function listaProductos() {
             response[key].name +
             "</option>";
         $("#productos").append(newOptionRol);
-        $("#rolEdit").append(newOptionRol);
+        $("#productosEdit").append(newOptionRol);
     }
 }
 
@@ -111,5 +116,74 @@ async function eliminarCombo(comboId){
 }
 
 async function deleteCombo(comboId){
+    try {
+        var response = await deleteCombos(comboId);
+    } catch (e) {
+        swalResponse.fire({
+            text: "Error al eliminar el combo, por favor reintenta más tarde",
+            icon: "error",
+        });
+        return;
+    }
+	if (response.success) {
+		swalResponse.fire({
+			text: "Eliminado!",
+			icon: "success",
+		});
+		$("#comboTableBody tr").remove();
+		listacombos();
+	} else {
+		swalResponse.fire({
+			text: "Error al eliminar el combo, por favor reintenta más tarde",
+			icon: "error",
+		});
+	}
+}
 
-})
+function cargaEditarCombo(comboId){
+    $("#editar").click(function(){
+        editarCombo(comboId);
+        $("#spinnerEditar").show();
+        limpiarModalEditar();
+    });
+}
+
+async function editarCombo(comboId){
+    var nombre = $("#nombreEdit").val();
+    var productos = $("#productosEdit").val();
+    var bodyProductos = [];
+    for (const key in productos) {
+        bodyProductos.push({
+            "idproduct": productos[key]
+          })
+    }
+    
+    try {
+        var response = await editCombos(comboId, nombre, bodyProductos);
+    } catch (e) {
+        $("#spinnerEditar").hide();
+        $("#cancelarEditar").click();
+        swalResponse.fire({
+            text: "Error al editar el combo, por favor reintenta más tarde",
+            icon: "error",
+        });
+        return;
+    }
+	if (response.success) {
+        $("#spinnerEditar").hide();
+        $("#cancelarEditar").click();
+		swalResponse.fire({
+			text: "Combo editado!",
+			icon: "success",
+		});
+		$("#userTableBody tr").remove();
+		listacombos();
+	} else {
+        $("#spinnerEditar").hide();
+        $("#cancelarEditar").click();
+		swalResponse.fire({
+			text: "Error al editar el combo, por favor reintenta más tarde",
+			icon: "error",
+		});
+	}
+}

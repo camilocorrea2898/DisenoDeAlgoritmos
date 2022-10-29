@@ -56,6 +56,41 @@
     </div>
 </div>
 
+<!-- Modal editar-->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Combo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mb-3">
+                        <label for="nombreEdit" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreEdit" rows="3">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productosEdit" class="fomr-label">Productos</label>
+                        <select id="productosEdit" class="form-select" multiple="multiple" aria-label="Default select example">
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valorEdit" class="fomr-label">Valor</label>
+                        <input type="number" class="form-control" id="valorEdit">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="editar" type="button" class="btn btn-primary">
+                    <span id="spinnerEditar" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                    Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function() {
@@ -68,5 +103,11 @@
             agregarCombo(nombre,productos);
             limpiarModalAgregar();
         });
+    });
+    $("#cancelarAgregar").click(function(){
+        limpiarModalAgregar();
+    });
+    $("#cancelarEditar #editar").click(function(){
+        limpiarModalEditar();
     });
 </script>
