@@ -18,13 +18,15 @@ async function load(url) {
   let users = loadJs(url + "/users.js");
   let login = loadJs(url + "/login.js");
   let products = loadJs(url + "/products.js");
-  let combos = loadJs(url + "/combos.js")
+  let combos = loadJs(url + "/combos.js");
+  let proveedores = loadJs(url + "/supplier.js");
 
   await consumos;
   await users;
   await login;
   await products;
   await combos;
+  await proveedores;
 }
 
 function loadJs(url) {
