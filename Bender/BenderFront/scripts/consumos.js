@@ -49,13 +49,62 @@ function editUser(identification, userName, password, rolId) {
 }
 //---------------------------------------------------------------------------------------
 function rolsGetAll() {
-    return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
-    //return consumoAjax("GET", "consumos/listroles.json", "", "");
+    //return consumoAjax("GET", urlBase + "Roles/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listroles.json", "", "");
 }
 //---------------------------------------------------------------------------------------
 function userGetAll() {
-    return consumoAjax("GET", urlBase + "User/GetAll", "", "");
-    //return consumoAjax("GET", "consumos/listuser.json", "", "");
+    //return consumoAjax("GET", urlBase + "User/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listuser.json", "", "");
+}
+//---------------------------------------------------------------------------------------
+function supplierGetAll() {
+    //return consumoAjax("GET", urlBase + "Supplier/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listproveedores.json", "", "");
+}
+//---------------------------------------------------------------------------------------
+function productGetAll() {
+    //return consumoAjax("GET", urlBase + "Products/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listproductos.json", "", "");
+}
+//---------------------------------------------------------------------------------------
+function insertProduct(name, supplier, price) {
+    url = urlBase + "Products/Insert";
+    body = {
+        "name": name,
+        "supplier": supplier,
+        "price": price
+    }
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
+function deleteProduct(productId) {
+    return consumoAjax("DELETE", urlBase + "Products/Delete/" + productId, "", "");
+}
+//---------------------------------------------------------------------------------------
+function editProduct(productId, name, supplier, price) {
+    url = urlBase + "User/Edit/" + productId;
+    body = {
+        "name": name,
+        "supplier": supplier,
+        "price": price,
+        "invoiceIdinvoice": 0
+    }
+    return consumoAjax("PUT", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
+function combosGetAll() {
+    //return consumoAjax("GET", urlBase + "Combos/GetAll", "", "");
+    return consumoAjax("GET", "consumos/listcombos.json", "", "");
+}
+//---------------------------------------------------------------------------------------
+function insertCombos(name, products) {
+    url = urlBase + "/Combos/Insert";
+    body = {
+        "nameCombo": name,
+        "products": products
+    }
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
 }
 //---------------------------------------------------------------------------------------
 function consumoAjax(method, url, body, contentType) {

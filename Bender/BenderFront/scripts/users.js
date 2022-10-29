@@ -1,4 +1,4 @@
-const swal = Swal.mixin({
+/*const swal = Swal.mixin({
     width: 400,
 });
 
@@ -7,7 +7,7 @@ const swalResponse = Swal.mixin({
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
-});
+});*/
 
 function limpiarModalAgregar(){
     $("#identificacion").val("");
