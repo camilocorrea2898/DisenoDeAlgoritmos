@@ -20,7 +20,7 @@ async function getProveedor(proveedorId) {
     }
 }
 
-async function listaProductos() {
+async function listaProducto() {
     var response = await productGetAll();
     for (const key in response) {
         var newRowContent =
@@ -73,7 +73,7 @@ async function agregarProducto(nombre,proveedor,valor){
             icon: "success",
         });
         $("#productTableBody tr").remove();
-        listaProductos();
+        listaProducto();
         
     } else {
         $("#spinnerAgregar").hide();
@@ -120,7 +120,7 @@ async function eliminarProduct(productId){
 			icon: "success",
 		});
 		$("#productTableBody tr").remove();
-		listaProductos();
+		listaProducto();
 	} else {
 		swalResponse.fire({
 			text: "Error al eliminar el producto, por favor reintenta más tarde",
@@ -160,7 +160,7 @@ async function editarProducto(productId){
 			icon: "success",
 		});
 		$("#productTableBody tr").remove();
-		listaProductos();
+		listaProducto();
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();

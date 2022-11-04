@@ -27,7 +27,7 @@ namespace ApiRest.Controller
                     GetData row = new()
                     {
                         Id = data.IdPurchase,
-                        Identfication = data.Nitsupplier,
+                        Identification = data.Nitsupplier,
                         Name = data.Supplier 
                     };
                     objGetData.Add(row);
@@ -48,7 +48,7 @@ namespace ApiRest.Controller
                 objGetDataObject = new()
                 {
                     Id = ObjData.IdPurchase,
-                    Identfication = ObjData.Nitsupplier,
+                    Identification = ObjData.Nitsupplier,
                     Name = ObjData.Supplier
                 };
             }
@@ -66,7 +66,7 @@ namespace ApiRest.Controller
                 Purchase objPurchase = new()
                 {
                     //Date = DateOnly.Parse(objInsert.Date),
-                    Nitsupplier = objInsert.Identfication,
+                    Nitsupplier = objInsert.Identification,
                     ProductIdproduct = 0,
                     Quantity = "",
                     Supplier = objInsert.Name
@@ -95,7 +95,7 @@ namespace ApiRest.Controller
                 var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).FirstOrDefault();
                 //objPurchase.Date = objEdit.Date == null ? objPurchase.Date : DateOnly.Parse(objEdit.Date);
                 objPurchase.Supplier = String.IsNullOrEmpty(objEdit.Name) ? objPurchase.Supplier : objEdit.Name;
-                objPurchase.Nitsupplier = String.IsNullOrEmpty(objEdit.Identfication) ? objPurchase.Nitsupplier : objEdit.Identfication;
+                objPurchase.Nitsupplier = String.IsNullOrEmpty(objEdit.Identification) ? objPurchase.Nitsupplier : objEdit.Identification;
                 //objPurchase.Quantity = String.IsNullOrEmpty(objEdit.Quantity) ? objPurchase.Quantity : objEdit.Quantity;
                 //objPurchase.ProductIdproduct = objEdit.ProductIdproduct == 0 ? objPurchase.ProductIdproduct : objEdit.ProductIdproduct;
                 _context.Entry(objPurchase).State = EntityState.Modified;

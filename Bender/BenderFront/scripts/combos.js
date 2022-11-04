@@ -84,7 +84,7 @@ async function agregarCombo(nombre,productos){
             icon: "success",
         });
         $("#comboTableBody tr").remove();
-        listacombos();
+        listaCombos();
         
     } else {
         $("#spinnerAgregar").hide();
@@ -176,8 +176,8 @@ async function editarCombo(comboId){
 			text: "Combo editado!",
 			icon: "success",
 		});
-		$("#userTableBody tr").remove();
-		listacombos();
+		$("#comboTableBody tr").remove();
+		listaCombos();
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();

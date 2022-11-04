@@ -63,6 +63,28 @@ function supplierGetAll() {
     //return consumoAjax("GET", "consumos/listproveedores.json", "", "");
 }
 //---------------------------------------------------------------------------------------
+function insertSupplier(identification, name) {
+    url = urlBase + "Purchases/Insert";
+    body = {
+        "identification": identification,
+        "name": name
+      }
+    return consumoAjax("POST", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
+function editSupplier(supplierId, identification, name) {
+    url = urlBase + "Purchases/Edit/" + supplierId;
+    body = {
+        "identification": identification,
+        "name": name
+      }
+    return consumoAjax("PUT", url, JSON.stringify(body), "application/json;charset=UTF-8");
+}
+//---------------------------------------------------------------------------------------
+function deleteSupplier(supplierId) {
+    return consumoAjax("DELETE", urlBase + "Purchases/Delete/" + supplierId, "", "");
+}
+//---------------------------------------------------------------------------------------
 function productGetAll() {
     return consumoAjax("GET", urlBase + "Products/GetAll", "", "");
     //return consumoAjax("GET", "consumos/listproductos.json", "", "");
