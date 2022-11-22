@@ -105,7 +105,7 @@ function deleteProduct(productId) {
 }
 //---------------------------------------------------------------------------------------
 function editProduct(productId, name, supplier, price) {
-    url = urlBase + "User/Edit/" + productId;
+    url = urlBase + "Products/Edit/" + productId;
     body = {
         "name": name,
         "supplier": supplier,
@@ -121,7 +121,7 @@ function combosGetAll() {
 }
 //---------------------------------------------------------------------------------------
 function insertCombos(name, products) {
-    url = urlBase + "/Combos/Insert";
+    url = urlBase + "Combos/Insert";
     body = {
         "nameCombo": name,
         "products": products

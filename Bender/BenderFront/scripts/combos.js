@@ -83,9 +83,9 @@ async function agregarCombo(nombre,productos){
             text: "Agregado!",
             icon: "success",
         });
-        $("#comboTableBody tr").remove();
-        listaCombos();
-        
+        //$("#comboTableBody tr").remove();
+        //listaCombos();
+        $("#contenido").load("pages/combo.html");
     } else {
         $("#spinnerAgregar").hide();
         $("#cancelarAgregar").click();
@@ -130,8 +130,9 @@ async function deleteCombo(comboId){
 			text: "Eliminado!",
 			icon: "success",
 		});
-		$("#comboTableBody tr").remove();
-		listacombos();
+		//$("#comboTableBody tr").remove();
+		//listacombos();
+        $("#contenido").load("pages/combo.html");
 	} else {
 		swalResponse.fire({
 			text: "Error al eliminar el combo, por favor reintenta más tarde",
@@ -176,8 +177,9 @@ async function editarCombo(comboId){
 			text: "Combo editado!",
 			icon: "success",
 		});
-		$("#comboTableBody tr").remove();
-		listaCombos();
+		//$("#comboTableBody tr").remove();
+		//listaCombos();
+        $("#contenido").load("pages/combo.html");
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();

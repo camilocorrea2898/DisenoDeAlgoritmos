@@ -98,7 +98,8 @@ async function eliminarUser(userId){
 			icon: "success",
 		});
 		$("#userTableBody tr").remove();
-		listaUsuarios();
+		//listaUsuarios();
+        $("#contenido").load("pages/usuario.html");
 	} else {
 		swalResponse.fire({
 			text: "Error al eliminar el usuario, por favor reintenta más tarde",
@@ -119,6 +120,7 @@ async function editarUser(identification){
     var nombre = $("#nombreEdit").val();
     var password = $("#passwordEdit").val();
     var rolId = $("#rolEdit").val();
+    rolId = rolId == null || rolId == undefined || rolId == "" ? 0 : rolId;
     try {
         var response = await editUser(identification, nombre, password, rolId);
     } catch (e) {
@@ -138,7 +140,8 @@ async function editarUser(identification){
 			icon: "success",
 		});
 		$("#userTableBody tr").remove();
-		listaUsuarios();
+		//listaUsuarios();
+        $("#contenido").load("pages/usuario.html");
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();
@@ -169,9 +172,9 @@ async function agregarUsuario(identification,nombre,password,rol){
             text: "Agregado!",
             icon: "success",
         });
-        $("#userTableBody tr").remove();
-        listaUsuarios();
-        
+        //$("#userTableBody tr").remove();
+        //listaUsuarios();
+        $("#contenido").load("pages/usuario.html");
     } else {
         $("#spinnerAgregar").hide();
         $("#cancelarAgregar").click();

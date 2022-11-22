@@ -72,9 +72,9 @@ async function agregarProducto(nombre,proveedor,valor){
             text: "Agregado!",
             icon: "success",
         });
-        $("#productTableBody tr").remove();
-        listaProducto();
-        
+        //$("#productTableBody tr").remove();
+        //listaProducto();
+        $("#contenido").load("pages/producto.html");
     } else {
         $("#spinnerAgregar").hide();
         $("#cancelarAgregar").click();
@@ -119,8 +119,9 @@ async function eliminarProduct(productId){
 			text: "Eliminado!",
 			icon: "success",
 		});
-		$("#productTableBody tr").remove();
-		listaProducto();
+		//$("#productTableBody tr").remove();
+		//listaProducto();
+        $("#contenido").load("pages/producto.html");
 	} else {
 		swalResponse.fire({
 			text: "Error al eliminar el producto, por favor reintenta más tarde",
@@ -159,8 +160,9 @@ async function editarProducto(productId){
 			text: "Usuario editado!",
 			icon: "success",
 		});
-		$("#productTableBody tr").remove();
-		listaProducto();
+		//$("#productTableBody tr").remove();
+		//listaProducto();
+        $("#contenido").load("pages/producto.html");
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();

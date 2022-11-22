@@ -44,9 +44,9 @@ async function agregarProveedor(identification,nombre){
             text: "Agregado!",
             icon: "success",
         });
-        $("#proveedorTableBody tr").remove();
-        listaProveedor();
-        
+        //$("#proveedorTableBody tr").remove();
+        //listaProveedor();
+        $("#contenido").load("pages/proveedor.html");
     } else {
         $("#spinnerAgregar").hide();
         $("#cancelarAgregar").click();
@@ -86,8 +86,9 @@ async function editarSupplier(id){
 			text: "Proveedor editado!",
 			icon: "success",
 		});
-        $("#proveedorTableBody tr").remove();
-        listaProveedor();
+        //$("#proveedorTableBody tr").remove();
+        //listaProveedor();
+        $("#contenido").load("pages/proveedor.html");
 	} else {
         $("#spinnerEditar").hide();
         $("#cancelarEditar").click();
@@ -132,8 +133,9 @@ async function eliminarSupplier(supplierId){
 			text: "Eliminado!",
 			icon: "success",
 		});
-		$("#proveedorTableBody tr").remove();
-        listaProveedor();
+		//$("#proveedorTableBody tr").remove();
+        //listaProveedor();
+        $("#contenido").load("pages/proveedor.html");
 	} else {
 		swalResponse.fire({
 			text: "Error al eliminar el proveedor, por favor reintenta más tarde",
