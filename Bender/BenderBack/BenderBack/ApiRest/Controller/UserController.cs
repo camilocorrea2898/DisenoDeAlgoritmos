@@ -22,7 +22,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.Bender.User> ObjData = _context.Users.ToList();
+                List<Model.Bender.User> ObjData = _context.Users.OrderBy(x => x.Iduser).ToList();
                 foreach (var data in ObjData)
                 {
                     GetData row = new()
@@ -45,7 +45,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                Model.Bender.User ObjData = _context.Users.Where(x=>x.Iduser== Identification).FirstOrDefault();
+                Model.Bender.User ObjData = _context.Users.Where(x=>x.Iduser== Identification).OrderBy(x => x.Iduser).FirstOrDefault();
                 objGetDataObject = new()
                 {
                     Identification = Convert.ToString(ObjData.Iduser),
@@ -102,7 +102,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
+                var objUsers = _context.Users.Where(x => x.Iduser == Identification).OrderBy(x => x.Iduser).FirstOrDefault();
                 objUsers.Names = String.IsNullOrEmpty(objEdit.Name) ? objUsers.Names : objEdit.Name;
                 objUsers.RolIdrol = objEdit.RolId == 0 ? objUsers.RolIdrol : objEdit.RolId;
                 objUsers.BranchIdbranch = objUsers.BranchIdbranch;
@@ -128,7 +128,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objUsers = _context.Users.Where(x => x.Iduser == Identification).FirstOrDefault();
+                var objUsers = _context.Users.Where(x => x.Iduser == Identification).OrderBy(x => x.Iduser).FirstOrDefault();
                 _context.Remove(objUsers);
                 _context.SaveChanges();
                 objReturn=objReturn.SelectedResponse(true);
@@ -146,7 +146,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                Model.Bender.User objUsers = _context.Users.Where(x => x.Iduser == Convert.ToInt32(objInsert.User)).FirstOrDefault();
+                Model.Bender.User objUsers = _context.Users.Where(x => x.Iduser == Convert.ToInt32(objInsert.User)).OrderBy(x => x.Iduser).FirstOrDefault();
                 if(objUsers != null)
                 {
                     if (BCrypt.Net.BCrypt.Verify(objInsert.Password, objUsers.Password))

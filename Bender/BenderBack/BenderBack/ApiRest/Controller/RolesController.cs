@@ -17,9 +17,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.Bender.Rol> ObjData = _context.Rols
-                //.Where(x => x.Id == 1)
-                .ToList();
+                List<Model.Bender.Rol> ObjData = _context.Rols.OrderBy(x => x.Idrol).ToList();
                 foreach (var data in ObjData)
                 {
                     Dto.Roles.GetData row = new()

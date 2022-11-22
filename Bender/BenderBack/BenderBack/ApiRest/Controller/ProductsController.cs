@@ -19,7 +19,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.Bender.Product> ObjData = _context.Products.ToList();
+                List<Model.Bender.Product> ObjData = _context.Products.OrderBy(x => x.Idproduct).ToList();
                 foreach (var data in ObjData)
                 {
                     GetData row = new()
@@ -43,7 +43,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                Model.Bender.Product ObjData = _context.Products.Where(x => x.Idproduct == Idproduct).FirstOrDefault();
+                Model.Bender.Product ObjData = _context.Products.Where(x => x.Idproduct == Idproduct).OrderBy(x => x.Idproduct).FirstOrDefault();
                 objGetDataObject = new()
                 {
                     Idproduct = ObjData.Idproduct,
@@ -92,7 +92,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objProducts = _context.Products.Where(x => x.Idproduct == Idproduct).FirstOrDefault();
+                var objProducts = _context.Products.Where(x => x.Idproduct == Idproduct).OrderBy(x => x.Idproduct).FirstOrDefault();
                 objProducts.InvoiceIdinvoice = objEdit.InvoiceIdinvoice ==0 ? objProducts.InvoiceIdinvoice : objEdit.InvoiceIdinvoice;
                 objProducts.Supplier = String.IsNullOrEmpty(objEdit.Supplier) ? objProducts.Supplier : objEdit.Supplier;
                 objProducts.Price = String.IsNullOrEmpty(objEdit.Price) ? objProducts.Price : objEdit.Price;
@@ -118,7 +118,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objProducts = _context.Products.Where(x => x.Idproduct == Idproduct).FirstOrDefault();
+                var objProducts = _context.Products.Where(x => x.Idproduct == Idproduct).OrderBy(x => x.Idproduct).FirstOrDefault();
                 _context.Remove(objProducts);
                 _context.SaveChanges();
                 objReturn = objReturn.SelectedResponse(true);

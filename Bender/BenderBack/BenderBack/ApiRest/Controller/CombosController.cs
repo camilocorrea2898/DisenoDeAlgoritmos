@@ -22,7 +22,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Model.Bender.Combo> ObjData = _context.Combos.ToList();
+                List<Model.Bender.Combo> ObjData = _context.Combos.OrderBy(x => x.Idcombo).ToList();
                 foreach (var data in ObjData)
                 {
                     
@@ -55,7 +55,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                Model.Bender.Combo ObjData = _context.Combos.Where(x => x.Idcombo == Idcombo).FirstOrDefault();
+                Model.Bender.Combo ObjData = _context.Combos.Where(x => x.Idcombo == Idcombo).OrderBy(x => x.Idcombo).FirstOrDefault();
                 List<Model.Bender.ProductHasCombo> ObjDataHas = _context.ProductHasCombos.Where(x => x.CombosIdcombos == Idcombo).ToList();
                 List<Dto.Product.ProductCombo> objProductCombo = new();
                 foreach (var dataHas in ObjDataHas)
@@ -84,7 +84,7 @@ namespace ApiRest.Controller
             try
 
             {
-                List<Model.Bender.Combostockexist> ObjData = _context.Combostockexists.ToList();
+                List<Model.Bender.Combostockexist> ObjData = _context.Combostockexists.OrderBy(x => x.CombosIdcombos).ToList();
                 
                 foreach (var data in ObjData)
                 {
@@ -125,7 +125,7 @@ namespace ApiRest.Controller
             try
 
             {
-                List<Model.Bender.Combostockexist> ObjData = _context.Combostockexists.ToList();
+                List<Model.Bender.Combostockexist> ObjData = _context.Combostockexists.OrderBy(x => x.CombosIdcombos).ToList();
 
                 foreach (var data in ObjData)
                 {
@@ -213,7 +213,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objCombos = _context.Combos.Where(x => x.Idcombo == IdCombo).FirstOrDefault();
+                var objCombos = _context.Combos.Where(x => x.Idcombo == IdCombo).OrderBy(x => x.Idcombo).FirstOrDefault();
                 objCombos.Namecombo = String.IsNullOrEmpty(objEdit.nameCombo) ? objCombos.Namecombo : objEdit.nameCombo;
 
                 _context.ProductHasCombos.RemoveRange(_context.ProductHasCombos.Where(x => x.CombosIdcombos == IdCombo));
@@ -260,7 +260,7 @@ namespace ApiRest.Controller
                 _context.ProductHasCombos.RemoveRange(_context.ProductHasCombos.Where(x => x.CombosIdcombos == IdCombo));
                 _context.SaveChanges();
 
-                var objCombos = _context.Combos.Where(x => x.Idcombo == IdCombo).FirstOrDefault();
+                var objCombos = _context.Combos.Where(x => x.Idcombo == IdCombo).OrderBy(x => x.Idcombo).FirstOrDefault();
                 _context.Remove(objCombos);
                 _context.SaveChanges();
 

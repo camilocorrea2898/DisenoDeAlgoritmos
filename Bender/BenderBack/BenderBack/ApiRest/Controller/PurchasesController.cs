@@ -20,7 +20,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                List<Purchase> ObjData = _context.Purchases.ToList();
+                List<Purchase> ObjData = _context.Purchases.OrderBy(x => x.IdPurchase).ToList();
                 foreach (var data in ObjData)
                 {
 
@@ -43,7 +43,7 @@ namespace ApiRest.Controller
         {
             try
             {
-                Purchase ObjData = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).FirstOrDefault();
+                Purchase ObjData = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).OrderBy(x => x.IdPurchase).FirstOrDefault();
 
                 objGetDataObject = new()
                 {
@@ -92,7 +92,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).FirstOrDefault();
+                var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).OrderBy(x => x.IdPurchase).FirstOrDefault();
                 //objPurchase.Date = objEdit.Date == null ? objPurchase.Date : DateOnly.Parse(objEdit.Date);
                 objPurchase.Supplier = String.IsNullOrEmpty(objEdit.Name) ? objPurchase.Supplier : objEdit.Name;
                 objPurchase.Nitsupplier = String.IsNullOrEmpty(objEdit.Identification) ? objPurchase.Nitsupplier : objEdit.Identification;
@@ -119,7 +119,7 @@ namespace ApiRest.Controller
             var objReturn = new Dto.Response();
             try
             {
-                var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).FirstOrDefault();
+                var objPurchase = _context.Purchases.Where(x => x.IdPurchase == IdPurchase).OrderBy(x => x.IdPurchase).FirstOrDefault();
                 _context.Remove(objPurchase);
                 _context.SaveChanges();
                 objReturn = objReturn.SelectedResponse(true);
